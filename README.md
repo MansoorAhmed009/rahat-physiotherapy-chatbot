@@ -124,16 +124,58 @@ DR_WHATSAPP_TO=+923152968384
 | POST | `/appointment` | Book an appointment |
 | POST | `/lead` | Capture a lead / inquiry |
 
-## Embedding on a Website
+## Deployment
 
-Add this snippet to any HTML page:
+### Deploy Frontend to Vercel
+
+1. Go to [https://vercel.com](https://vercel.com) and sign in with GitHub
+2. Click **Add New** → **Project**
+3. Import the `rahat-physiotherapy-chatbot` repository
+4. Set **Root Directory** to `frontend`
+5. Vercel auto-detects Next.js — no changes needed
+6. Add environment variable:
+   - `NEXT_PUBLIC_API_URL` → your Render backend URL (e.g., `https://rahat-physiotherapy-backend.onrender.com`)
+7. Click **Deploy**
+
+Your frontend will be live at `https://rahat-physiotherapy.vercel.app`
+
+### Deploy Backend to Render
+
+1. Go to [https://render.com](https://render.com) and sign in with GitHub
+2. Click **New +** → **Web Service**
+3. Connect your `rahat-physiotherapy-chatbot` repository
+4. Set:
+   - **Root Directory**: `backend`
+   - **Runtime**: `Python`
+   - **Build Command**: `pip install -r requirements.txt`
+   - **Start Command**: `uvicorn main:app --host 0.0.0.0 --port $PORT`
+5. Add environment variables:
+   - `GEMINI_API_KEY` → your Gemini API key
+   - `CORS_ORIGINS` → `https://rahat-physiotherapy.vercel.app`
+   - `SMTP_USER`, `SMTP_PASSWORD` → (optional, for email notifications)
+   - `DR_EMAIL_TO` → `rahatphysio9@gmail.com`
+6. Click **Create Web Service**
+
+### After Both Are Deployed
+
+Update the Vercel environment variable:
+- `NEXT_PUBLIC_API_URL` → `https://your-render-backend-url.onrender.com`
+
+Then redeploy the frontend on Vercel (it auto-deploys when you push to GitHub).
+
+## Embedding on Client Website
+
+Once deployed, add this iframe to any HTML page on Dr. Naseem's website:
 
 ```html
-<div id="chatbot-root"></div>
-<script src="https://your-deployment-url.com/chatbot-widget.js"></script>
+<iframe
+  src="https://rahat-physiotherapy.vercel.app"
+  style="position:fixed; bottom:20px; right:20px; width:380px; height:600px; border:none; border-radius:16px; box-shadow:0 4px 24px rgba(0,0,0,0.15); z-index:9999;"
+  title="Dr. Naseem Alam - AI Assistant"
+></iframe>
 ```
 
-Or if using the full-page version, deploy the frontend to **Vercel** and point your domain to it.
+Or use a floating chat button that opens the chatbot in a modal.
 
 ## License
 
