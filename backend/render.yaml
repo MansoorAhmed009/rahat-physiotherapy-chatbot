@@ -1,0 +1,21 @@
+services:
+  - type: web
+    name: rahat-physiotherapy-backend
+    runtime: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: GEMINI_API_KEY
+        sync: false
+      - key: SMTP_HOST
+        value: smtp.gmail.com
+      - key: SMTP_PORT
+        value: "587"
+      - key: SMTP_USER
+        sync: false
+      - key: SMTP_PASSWORD
+        sync: false
+      - key: DR_EMAIL_TO
+        value: rahatphysio9@gmail.com
+      - key: CORS_ORIGINS
+        value: https://rahat-physiotherapy.vercel.app
